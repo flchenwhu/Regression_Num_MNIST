@@ -28,9 +28,9 @@ def plot_image(img, label, name):
 
 def one_hot(label, depth=10):
     #out = torch.zeros(label.size(0), depth)
-    out=torch.zeros(label.size(0),depth,device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"))  # 自己修改 加了cuda()
+    out=torch.zeros(label.size(0),depth,device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")) # （自己添加）) # 自己修改 加了cuda()
     # idx = torch.LongTensor(label).view(-1, 1)
-    idx=torch.as_tensor(label, device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")).view(-1,1)  # 自己修改 加了cuda()
-    # print(idx.is_cuda, out.is_cuda)  # 自己修改 验证变量是否加载到cuda
-    out.scatter_(dim=1, index=idx, value=1)
+    idx=torch.as_tensor(label, device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")) # （自己添加）).view(-1,1) # 自己修改 加了cuda()
+    # print(idx.is_cuda, out.is_cuda) # 自己修改 验证变量是否加载到cuda
+    out.scatter_(dim=1, index=idx.unsqueeze(1), value=1) # 在索引张量上增加一个维度，使其与输出张量匹配
     return out
